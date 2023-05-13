@@ -4,12 +4,13 @@ from flask_jwt_extended import JWTManager
 from app.models import User
 from app.db import db
 from app import config
-
+from datetime import timedelta
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = config.TEST_DB if app.config['TESTING'] else config.SP_DB
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'super-secret' # Change this!
 app.config["TESTING"] = False
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 jwt = JWTManager(app)
 ma = Marshmallow(app)
 db.init_app(app)

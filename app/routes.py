@@ -69,7 +69,7 @@ def logout_user():
     db.session.commit()
     return jsonify(message='Successfully logged out'), 200
 
-@app.route('/users/<int:user_id>', methods=['GET'])
+@app.route('/users/<int:user_id>')
 @jwt_required()
 def get_user(user_id):
     # Get the user from the database.
@@ -80,7 +80,7 @@ def get_user(user_id):
         return jsonify({'error': 'User not found'}), 404
 
     # Return the user as a JSON object.
-    return jsonify({'user': user})
+    return UserSchema().dump(user)
 
 @app.route('/users/<int:user_id>', methods=['PUT'])
 @jwt_required()
@@ -98,7 +98,7 @@ def update_user(user_id):
     # Save the user to the database.
     db.session.commit()
     # Return the user as a JSON object.
-    return jsonify({'user': user})
+    return UserSchema().dump(user)
 
 @app.route('/users/<int:user_id>', methods=['DELETE'])
 @jwt_required()
