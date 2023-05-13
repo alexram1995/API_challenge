@@ -1,0 +1,93 @@
+openapi: 3.0.0
+info:
+  title: User API
+  description: This API provides endpoints for creating and managing users and publications.
+  version: 1.0.0
+
+paths:
+  /publications:
+    post:
+      tags:
+        - User
+      summary: Create a publication.
+      description: This endpoint creates a new publication.
+      security:
+        - Bearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The title of the publication.
+                  example: My first publication.
+                description:
+                  type: string
+                  description: The description of the publication.
+                  example: This is my first publication.
+                priority:
+                  type: integer
+                  description: The priority of the publication.
+                  example: 1
+                status:
+                  type: string
+                  description: The status of the publication.
+                  example: Draft
+      responses:
+        201:
+          description: The publication was created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publication'
+        400:
+          description: The request is invalid. For example, the request body is missing or malformed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Publication:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The publication's ID.
+          example: 1
+        title:
+          type: string
+          description: The publication's title.
+          example: My first publication.
+        description:
+          type: string
+          description: The publication's description.
+          example: This is my first publication.
+        priority:
+          type: integer
+          description: The publication's priority.
+          example: 1
+        status:
+          type: string
+          description: The publication's status.
+          example: Draft
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message.
+          example: Invalid request body.
+        status_code:
+          type: integer
+          description: The HTTP status code.
+          example: 400
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

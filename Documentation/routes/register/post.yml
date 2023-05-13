@@ -1,0 +1,93 @@
+openapi: 3.0.0
+info:
+  title: Register
+  description: This API provides endpoints for creating users.
+  version: 1.0.0
+
+paths:
+  /register:
+    post:
+      tags:
+        - User
+      summary: Register a new user.
+      description: This endpoint registers a new user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: The user's email address.
+                  example: user@example.com
+                password:
+                  type: string
+                  description: The user's password at least 8 characters.
+                  example: password123
+                fullname:
+                  type: string
+                  description: The user's full name.
+                  example: John Doe
+                photo:
+                  type: string
+                  description: The user's photo path.
+                  example: https://example.com/photo.jpg
+      responses:
+        201:
+          description: The user was created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: The request is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        409:
+          description: The user already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The user's ID.
+          example: 1
+        email:
+          type: string
+          description: The user's email address.
+          example: user@example.com
+        password:
+          type: string
+          description: The user's password.
+          example: password123
+        fullname:
+          type: string
+          description: The user's full name.
+          example: John Doe
+        photo:
+          type: string
+          description: The user's photo.
+          example: https://example.com/photo.jpg
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message.
+          example: Invalid email or password.
+        status_code:
+          type: integer
+          description: The HTTP status code.
+          example: 400

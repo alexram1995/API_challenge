@@ -1,0 +1,68 @@
+openapi: 3.0.0
+info:
+  title: Login
+  description: This API provides an endpoints to log in users.
+  version: 1.0.0
+
+paths:
+  /login:
+    post:
+      tags:
+        - User
+      summary: Log in a user.
+      description: This endpoint logs in a user and returns an access token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: The user's email address.
+                  example: user@example.com
+                password:
+                  type: string
+                  description: The user's password.
+                  example: password123
+      responses:
+        200:
+          description: The user was logged in successfully and an access token was returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+        400:
+          description: The request is invalid. For example, the email or password is not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: The user is not authorized to access the endpoint. For example, the email or password is incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    AccessToken:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: The user's access token.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNvbSIsImV4cCI6MTYyMzU5MDY3N30.--_--_--
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message.
+          example: Invalid email or password.
+        status_code:
+          type: integer
+          description: The HTTP status code.
+          example: 400

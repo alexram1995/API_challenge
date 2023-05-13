@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: User API
+  description: This API provides endpoints for creating and managing users.
+  version: 1.0.0
+
+paths:
+  /logout:
+    post:
+      tags:
+        - User
+      summary: Log out a user.
+      description: This endpoint logs out a user and invalidates their access token.
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: The user was logged out successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        401:
+          description: The user is not logged in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Success:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The success message.
+          example: Successfully logged out.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message.
+          example: Invalid access token.
+        status_code:
+          type: integer
+          description: The HTTP status code.
+          example: 401

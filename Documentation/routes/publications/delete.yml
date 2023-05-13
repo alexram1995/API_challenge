@@ -1,0 +1,72 @@
+openapi: 3.0.0
+info:
+  title: User API
+  description: This API provides endpoints for creating and managing users and publications.
+  version: 1.0.0
+
+paths:
+  /publications/{publication_id}:
+    delete:
+      tags:
+        - User
+      summary: Delete a publication.
+      description: This endpoint deletes an existing publication.
+      parameters:
+        - in: path
+          name: publication_id
+          schema:
+            type: integer
+          required: true
+          description: The ID of the publication to delete.
+      security: 
+        - Bearer: []
+        
+      responses:
+        200:
+          description: The publication was deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The success message.
+                    example: Deleted.
+        400:
+          description: The request is invalid. For example, the request body is missing or malformed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: The user is not logged in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: The user does not have permission to delete the publication.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message.
+          example: Invalid request body.
+        status_code:
+          type: integer
+          description: The HTTP status code.
+          example: 400
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
