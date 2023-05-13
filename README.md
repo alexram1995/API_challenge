@@ -41,6 +41,18 @@ An API challenge for servicepad interview, Hi Guys!
 
 ## Running the API
 
-1. Run the Flask development server: `flask run`
+1. Run the Flask development server while in the API_challenge folder run: `flask run`
 2. The API should now be accessible at `http://localhost:5000/`
-3. You will have an admin account email='admin@example.com', password='password' with this you should be able to register other users
+3. You will have an admin account email='admin@example.com', password='password' with this you should be able to register other users using the api's
+4. The available API's are:
+    - POST /login
+    - POST /logout
+    - POST /register
+    - POST /publications
+    - GET /publications
+    - UPDATE /publications/<publication_id>
+    - DELETE /publications/<publication_id>
+    - GET /users
+    - UPDATE /users/<user_id>
+    - DELETE /users/<user_id>
+5. Run a [swagger](https://swagger.io/tools/swagger-ui/) server and import the Documentation files to see a more detailed usage.
