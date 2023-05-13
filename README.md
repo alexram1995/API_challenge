@@ -11,7 +11,7 @@ An API challenge for servicepad interview, Hi Guys!
 3. Install the dependencies: `pip install -r requirements.txt`
 4. Make sure you have 2 databases set up one to simulate "production" and other to "test" and add the host url in the `config.py` file.
 5. The tables should be created by the code when you run it for the first time, you can run the next code in case those are not created 
-```SQL
+` ```SQL
 CREATE TABLE user (
     id INTEGER PRIMARY KEY,
     email VARCHAR(120) UNIQUE,
@@ -36,7 +36,7 @@ CREATE TABLE access_tokens (
     id INTEGER PRIMARY KEY,
     access_token TEXT,
     user_id INTEGER REFERENCES user(id)
-);
+);`
 
 ## Running the API
 
