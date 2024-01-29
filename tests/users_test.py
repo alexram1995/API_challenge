@@ -1,6 +1,6 @@
 import pytest
 from app import app, db
-from app.models import User
+from app.models import Users
 
 @pytest.fixture
 def client():
@@ -10,7 +10,7 @@ def client():
     with app.app_context():
         db.create_all()
         # Create a test user
-        user = User(email='test@example.com', password='password', fullname="TESTER", photo="")
+        user = Users(email='test@example.com', password='password', fullname="TESTER", photo="")
         db.session.add(user)
         db.session.commit()
 

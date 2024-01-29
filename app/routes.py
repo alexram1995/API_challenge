@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import User, Publication, AccessTokens
+from app.models import Users, Publication, AccessTokens
 from app.schemas import UserSchema, PublicationSchema, AccessTokenSchema
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required, create_access_token,get_jwt_identity, verify_jwt_in_request
@@ -28,10 +28,10 @@ def register():
         return jsonify(message='Invalid password: At least 8 characters'), 400
     
      # Validate if it exists already
-    if User.query.filter_by(email=email).first():
+    if Users.query.filter_by(email=email).first():
         return jsonify(message='Invalid email: email already used in another account'), 400
     
-    new_user = User(email=email, password=password, fullname=fullname, photo=photo)
+    new_user = Users(email=email, password=password, fullname=fullname, photo=photo)
     db.session.add(new_user)
     db.session.commit()  
     return user_schema.jsonify(new_user)
@@ -41,14 +41,14 @@ def login():
     email = request.json['email']
     password = request.json['password']
 
-    user = User.query.filter_by(email=email).first()
-    if user and user.password == password:
+    user = Users.query.filter_by(email=email).first()
+    if user and Users.password == password:
         # Check if the user already has an access token.
-        user_id = user.id
+        user_id = Users.id
         if AccessTokens.query.filter_by(user_id=user_id).first():
             return jsonify(message='User already logged in'), 200
         else:
-            token = create_access_token(identity=user.id)
+            token = create_access_token(identity=Users.id)
             access_token = AccessTokens(access_token=token, user_id=user_id)
             db.session.add(access_token)
             db.session.commit()
@@ -59,7 +59,7 @@ def login():
 
 @app.route('/logout', methods=['POST'])
 @jwt_required()
-def logout_user():
+def logout_Users():
     current_user = get_jwt_identity()
     # Query the database for the user's access token.
     access_token = AccessTokens.query.filter_by(user_id=current_user).first()
@@ -71,9 +71,9 @@ def logout_user():
 
 @app.route('/users/<int:user_id>')
 @jwt_required()
-def get_user(user_id):
+def get_Users(user_id):
     # Get the user from the database.
-    user = User.query.get(user_id)
+    user = Users.query.get(user_id)
 
     # If the user does not exist, return a 404 error.
     if not user:
@@ -84,9 +84,9 @@ def get_user(user_id):
 
 @app.route('/users/<int:user_id>', methods=['PUT'])
 @jwt_required()
-def update_user(user_id):
+def update_Users(user_id):
     # Get the user from the database.
-    user = User.query.get(user_id)
+    user = Users.query.get(user_id)
     # If the user does not exist, return a 404 error.
     if not user:
         return jsonify({'error': 'User not found'}), 404
@@ -102,10 +102,10 @@ def update_user(user_id):
 
 @app.route('/users/<int:user_id>', methods=['DELETE'])
 @jwt_required()
-def delete_user(user_id):
+def delete_Users(user_id):
 
     # Get the user from the database.
-    user = User.query.get(user_id)
+    user = Users.query.get(user_id)
 
     # If the user does not exist, return a 404 error.
     if not user:
@@ -149,9 +149,9 @@ def post_publications():
 
 @app.route('/publications')
 @jwt_required()
-def get_all_publications_for_user():
+def get_all_publications_for_Users():
     """
-    Gets all publications for a specific user.
+    Gets all publications for a specific Users.
     """
     current_user = get_jwt_identity()
     publications = Publication.query.filter_by(user_id=current_user).all()

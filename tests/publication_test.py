@@ -1,7 +1,7 @@
 import pytest
 from flask import Flask
 from app import app, db
-from app.models import User, Publication
+from app.models import Users, Publication
 
 @pytest.fixture
 def client():
